@@ -1,0 +1,9 @@
+.button_counter {
+    margin: 5px;
+    height: 100px;
+    width: 150px;
+    border-radius: 40px;
+    color: darkblue;
+    font-size: xxx-large;
+    border: 2px solid;
+}

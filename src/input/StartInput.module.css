@@ -1,0 +1,7 @@
+.errorStart{
+    border: red 3px solid;
+}
+.superInput {
+    display: flex;
+    color: gold;
+}

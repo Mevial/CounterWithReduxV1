@@ -1,0 +1,13 @@
+.DisplayNum {
+    color: gold;
+    font-size: xxx-large;
+    height: 100px;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.DisplayRed {
+    color: red;
+    font-size: xxx-large;
+}
