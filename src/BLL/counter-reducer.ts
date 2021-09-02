@@ -12,6 +12,9 @@ type ActionType =
     | SetResetValueFromLocalStorageActionType
     | SetValuesActionType
     | SetValuesFromLocalStorageActionType
+    | AddMaxValueActionType
+    | SetMaxValueFromLocalStorageActionType
+
 export const counterReducer = (state: InitialStateType = initialState, action: ActionType): InitialStateType => {
     switch (action.type) {
         case "DISPLAY-VALUE":
@@ -42,15 +45,20 @@ export const counterReducer = (state: InitialStateType = initialState, action: A
                 startCount: action.startCount,
                 maxCount: action.maxCount
             }
+        case "ADD-MAX-VALUE":
+            return {
+                ...state,
+                maxCount: state.maxCount
+            }
+        case "SET-MAX-VALUE-LOCAL-STORAGE":
+            return {
+                ...state,
+                maxCount: action.maxCount
+            }
         default:
             return state
     }
 }
-
-
-// export const incValueAC = () => ({type: 'INC-VALUE'} as const)
-// export const setValueFromLocalStorageAC = (value: number) => ({type: 'SET-VALUE=FROM-LOCAL-STORAGE', value} as const)
-//
 
 export const incDisplayValueAC = () => ({type: 'DISPLAY-VALUE'} as const)
 export const setDisplayValueFromLocalStorageAC = (displayValue: number) => ({
@@ -75,15 +83,25 @@ export const setValuesFromLocalStorageAC = (startCount: number, maxCount: number
     maxCount
 } as const)
 
+export const addMaxValueAC = (maxCount: number) => ({
+    type: 'ADD-MAX-VALUE',
+    maxCount,
+} as const)
+export const setMaxValueFromLocalStorageAC = (maxCount: number) => ({
+    type: 'SET-MAX-VALUE-LOCAL-STORAGE',
+    maxCount
+} as const)
+
 
 export type IncDisplayValueActionType = ReturnType<typeof incDisplayValueAC>
 export type ResetValueActionType = ReturnType<typeof resetValueAC>
 export type SetValuesActionType = ReturnType<typeof setValuesAC>
-
+export type AddMaxValueActionType = ReturnType<typeof addMaxValueAC>
 
 export type SetDisplayValueFromLocalStorageAC = ReturnType<typeof setDisplayValueFromLocalStorageAC>
 export type SetResetValueFromLocalStorageActionType = ReturnType<typeof setResetValueFromLocalStorageAC>
 export type SetValuesFromLocalStorageActionType = ReturnType<typeof setValuesFromLocalStorageAC>
+export type SetMaxValueFromLocalStorageActionType = ReturnType<typeof setMaxValueFromLocalStorageAC>
 
 
 // THUNK
