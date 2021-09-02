@@ -1,6 +1,4 @@
-
 const initialState = {
-    value: 0,
     displayValue: 0,
     startCount: 0,
     maxCount: 0
@@ -8,9 +6,7 @@ const initialState = {
 
 type InitialStateType = typeof initialState
 type ActionType =
-    IncValueActionType
-    | SetValueFromLocalStorageActionType
-    | IncDisplayValueActionType
+    IncDisplayValueActionType
     | SetDisplayValueFromLocalStorageAC
     | ResetValueActionType
     | SetResetValueFromLocalStorageActionType
@@ -18,15 +14,6 @@ type ActionType =
     | SetValuesFromLocalStorageActionType
 export const counterReducer = (state: InitialStateType = initialState, action: ActionType): InitialStateType => {
     switch (action.type) {
-        case 'INC-VALUE':
-            return {
-                ...state, value: state.value + 1
-            }
-
-        case 'SET-VALUE=FROM-LOCAL-STORAGE':
-            return {
-                ...state, value: action.value
-            }
         case "DISPLAY-VALUE":
             return {
                 ...state, displayValue: state.displayValue + 1
@@ -46,8 +33,8 @@ export const counterReducer = (state: InitialStateType = initialState, action: A
         case "SET-VALUES":
             return {
                 ...state,
-                startCount: state.startCount,
-                maxCount: state.maxCount
+                startCount: action.startCount,
+                maxCount: action.maxCount
             }
         case "SET-VALUES-FROM-LOCAL-STORAGE":
             return {
@@ -61,9 +48,9 @@ export const counterReducer = (state: InitialStateType = initialState, action: A
 }
 
 
-export const incValueAC = () => ({type: 'INC-VALUE'} as const)
-export const setValueFromLocalStorageAC = (value: number) => ({type: 'SET-VALUE=FROM-LOCAL-STORAGE', value} as const)
-
+// export const incValueAC = () => ({type: 'INC-VALUE'} as const)
+// export const setValueFromLocalStorageAC = (value: number) => ({type: 'SET-VALUE=FROM-LOCAL-STORAGE', value} as const)
+//
 
 export const incDisplayValueAC = () => ({type: 'DISPLAY-VALUE'} as const)
 export const setDisplayValueFromLocalStorageAC = (displayValue: number) => ({
@@ -77,7 +64,11 @@ export const setResetValueFromLocalStorageAC = (startCount: number) => ({
     startCount
 } as const)
 
-export const setValuesAC = () => ({type: 'SET-VALUES'} as const)
+export const setValuesAC = (maxCount: number, startCount: number) => ({
+    type: 'SET-VALUES',
+    maxCount,
+    startCount
+} as const)
 export const setValuesFromLocalStorageAC = (startCount: number, maxCount: number) => ({
     type: 'SET-VALUES-FROM-LOCAL-STORAGE',
     startCount,
@@ -85,13 +76,11 @@ export const setValuesFromLocalStorageAC = (startCount: number, maxCount: number
 } as const)
 
 
-export type IncValueActionType = ReturnType<typeof incValueAC>
 export type IncDisplayValueActionType = ReturnType<typeof incDisplayValueAC>
 export type ResetValueActionType = ReturnType<typeof resetValueAC>
 export type SetValuesActionType = ReturnType<typeof setValuesAC>
 
 
-export type SetValueFromLocalStorageActionType = ReturnType<typeof setValueFromLocalStorageAC>
 export type SetDisplayValueFromLocalStorageAC = ReturnType<typeof setDisplayValueFromLocalStorageAC>
 export type SetResetValueFromLocalStorageActionType = ReturnType<typeof setResetValueFromLocalStorageAC>
 export type SetValuesFromLocalStorageActionType = ReturnType<typeof setValuesFromLocalStorageAC>

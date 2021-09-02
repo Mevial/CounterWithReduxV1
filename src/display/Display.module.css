@@ -6,8 +6,15 @@
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+   align-items: center;
 }
 .DisplayRed {
     color: red;
     font-size: xxx-large;
+    height: 100px;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    align-items: center;
 }

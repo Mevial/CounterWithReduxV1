@@ -9,7 +9,7 @@ export type DisplayPropsType = {
 export function Display(props: DisplayPropsType) {
     let messageText = (props.error) ? 'Incorrect value!' : 'enter values and press set'
     return (
-        <div className={props.displayValue === props.maxValue ? styles.DisplayNum + '' +  styles.DisplayRed : styles.DisplayNum}>
+        <div className={props.displayValue === props.maxValue ? styles.DisplayRed : styles.DisplayNum}>
             {props.message ? messageText : props.displayValue}
         </div>
     );

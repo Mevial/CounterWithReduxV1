@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "./BLL/store";
-import {incDisplayValueAC, incValueAC, resetValueAC, setValuesAC} from "./BLL/counter-reducer";
+import {incDisplayValueAC, resetValueAC, setValuesAC} from "./BLL/counter-reducer";
 import styles from './App.module.css'
 import {StartInput} from "./input/StartInput";
 import {MaxInput} from "./input/MaxInput";
@@ -10,44 +10,63 @@ import {Display} from "./display/Display";
 import {Button} from "./button/Button";
 
 function App() {
+
     //-------------------------------------------------------------------------------
-    // const [maxCount, setMaxCount] = useState(0)
-    // const [startCount, setStartCount] = useState(0)
+    const [maxCount, setMaxCount] = useState(0)
+    const [startCount, setStartCount] = useState(0)
     const [error, setError] = useState<boolean>(false)
     const [message, setMessage] = useState<boolean>(false)
-    // const [displayValue, setDisplayValue] = useState(0);
 
+    useEffect(() => {
+        let valueAsString = localStorage.getItem('counterValueMax')
+        if (valueAsString) {
+            let newValue = JSON.parse(valueAsString)
+            setMaxCount(newValue)
+        }
+    }, [])
+    useEffect(() => {
+        let valueAsString = localStorage.getItem('counterValueStart')
+        if (valueAsString) {
+            let newValue = JSON.parse(valueAsString)
+            setStartCount(newValue)
+        }
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem('counterValueMax', JSON.stringify(maxCount))
+    }, [maxCount])
+    useEffect(() => {
+        localStorage.setItem('counterValueStart', JSON.stringify(startCount))
+    }, [startCount])
 
     ///---------------------------------------------------------------------------------------------------------------
-    const value = useSelector<AppStateType, number>(state => state.counter.value)
-    const displayValue = useSelector<AppStateType, number>(state => state.counter.displayValue)
-    const startCount = useSelector<AppStateType, number>(state => state.counter.startCount)
-    const maxCount = useSelector<AppStateType, number>(state => state.counter.maxCount)
+
+    // const displayValue = useSelector<AppStateType, number>(state => state.counter.displayValue)
+    const startCountDisplay = useSelector<AppStateType, number>(state => state.counter.startCount)
+    const [displayValue, setDisplayValue] = useState(startCountDisplay);
+    // const maxCount = useSelector<AppStateType, number>(state => state.counter.maxCount)
     const dispatch = useDispatch()
 
-    const incHandler = () => {
-        dispatch(incValueAC())
-    }
     //------------------------------------------------------------------------------------------------------------------
 
     const incValue = () => {
-        dispatch(incDisplayValueAC())
-        // setDisplayValue(displayValue + 1);
+        setDisplayValue(displayValue + 1);
+        // dispatch(incDisplayValueAC())
         // console.log(displayValue)
-        // if (displayValue >= maxCount) {
-        //     setDisplayValue(maxCount)
-        // }
+        if (displayValue >= maxCount) {
+            setDisplayValue(maxCount)
+        }
     }
     const resetValue = () => {
-        dispatch(resetValueAC())
-        // setDisplayValue(startCount);
+        // dispatch(resetValueAC())
+        setDisplayValue(startCountDisplay);
     }
 
     const setValue = () => {
-dispatch(setValuesAC())
-        // setMessage(false)
-        // setError(false)
-        // setDisplayValue(startCount)
+        dispatch(setValuesAC(maxCount, startCount))
+        setMessage(false)
+        setError(false)
+        setDisplayValue(startCount)
     }
 
     const addStartCount = (value: number) => {
@@ -57,7 +76,7 @@ dispatch(setValuesAC())
         } else {
             setError(false)
         }
-        // setStartCount(value)
+        setStartCount(value)
     }
 
     const addMaxCount = (value: number) => {
@@ -67,52 +86,48 @@ dispatch(setValuesAC())
         } else {
             setError(false)
         }
-        // setMaxCount(value)
+        setMaxCount(value)
     }
     //-------------------------------------------------------------------------------------------
     return (
         <div className={styles.App}>
             <div className={styles.Block}>
                 <div className={styles.display}>
-                <StartInput text={'start value:'}
-                            addStartCount={addStartCount}
-                            startCount={startCount}
-                            error={error}
-                            // setStartCount={setStartCount}
-                />
-                <MaxInput text={'max value:'}
-                          addMaxCount={addMaxCount}
-                          maxCount={maxCount}
-                          error={error}/>
+                    <StartInput text={'start value:'}
+                                addStartCount={addStartCount}
+                                startCount={startCount}
+                                error={error}
+                        // setStartCount={setStartCount}
+                    />
+                    <MaxInput text={'max value:'}
+                              addMaxCount={addMaxCount}
+                              maxCount={maxCount}
+                              error={error}/>
                 </div>
                 <div className={styles.counter}>
                     <Button
                         text={'set'}
                         callback={setValue}
-                        disabled={false}
-                        // disabled={(maxCount < 0 || startCount === maxCount || startCount < 0 || startCount > maxCount || !message)}
+                        disabled={(maxCount < 0 || startCount === maxCount || startCount < 0 || startCount > maxCount || !message)}
                     />
-                    <button onClick={incHandler}>inc</button>
                 </div>
             </div>
             <div className={styles.Block}>
                 <div className={styles.display}>
                     <Display displayValue={displayValue} maxValue={maxCount} error={error} message={message}/>
-                    <h1>{value}</h1>
 
                 </div>
                 <div className={styles.counter}>
                     <Button
                         text={'inc'}
-                        disabled={false}
-                        // disabled={message || maxCount === displayValue}
+                        disabled={message || maxCount === displayValue}
                         callback={incValue}
                     />
                     <Button
                         text={'res'}
                         callback={resetValue}
-                        disabled={false}
-                        // disabled={startCount === displayValue || maxCount < 0 || startCount < 0 || startCount > maxCount || startCount > displayValue || message}
+
+                        disabled={startCount === displayValue || maxCount < 0 || startCount < 0 || startCount > maxCount || startCount > displayValue || message}
                     />
                 </div>
             </div>
